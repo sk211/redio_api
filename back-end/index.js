@@ -4,7 +4,7 @@ const cors = require("cors")
 const app = express();
 const ObjectId = require("mongodb").ObjectId;
 const port = process.env.PORT || 5000
-// const port =  5000
+// const port =  5000n
 require('dotenv').config();
 
 // middleware 
@@ -26,8 +26,8 @@ async function run() {
     try {
         await client.connect();
 
-        const packagesCollection = client.db("redio_db").collection("signUp");
         const orderCollection = client.db("redio_db").collection("create");
+        const packagesCollection = client.db("redio_db").collection("signUp");
 
 
         // post api 
@@ -42,20 +42,21 @@ async function run() {
 
 
         // get api 
-        app.get('/reade', async (req, res) => {
+        app.get('/show', async (req, res) => {
             const cursor = packagesCollection.find({})
-            const products = await cursor.toArray();
-            res.send(products)
+            const data = await cursor.toArray();
+            res.send(data)
+            console.log(data)
 
         })
 
 
         // delete event
 
-        app.delete("/deleteOrder/:id", async (req, res) => {
+        app.delete("/show/:id", async (req, res) => {
             console.log(req.params.id);
-            const result = await orderCollection.deleteOne({
-                _id: ObjectId(req.params.id),
+            const result = await packagesCollection.deleteOne({
+                _id: ObjectId(req.params.id)
             });
             res.send(result);
         });
